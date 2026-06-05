@@ -1,0 +1,92 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="HostelManagementSystem.MasterPages.Site" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Premium Hostel Management System</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="~/Content/fontawesome/css/all.min.css" />
+    
+    <!-- Custom Style System -->
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
+        
+        <!-- Premium Navigation Header -->
+        <header class="custom-navbar">
+            <a href='<%= Page.ResolveUrl("~/Pages/Home") %>' class="navbar-brand-custom">
+                <i class="fas fa-hotel"></i> Hostel<span>Management</span>
+            </a>
+            
+            <nav style="display: flex; align-items: center; gap: 1.5rem;">
+                <ul class="navbar-links">
+                    <!-- Public links -->
+                    <% if (Session["StudentID"] == null) { %>
+                        <li><a href='<%= Page.ResolveUrl("~/Pages/Home") %>'>Home</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Pages/About") %>'>About</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Pages/Contact") %>'>Contact</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Pages/StudentRegistration") %>'>Register</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Pages/StudentLogin") %>' class="btn-custom btn-primary-custom" style="color: white; padding: 0.5rem 1rem;">Student Login</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Admin/AdminLogin") %>' class="btn-custom btn-secondary-custom" style="padding: 0.5rem 1rem;">Admin Login</a></li>
+                    <% } else { %>
+                        <!-- Student Dashboard links -->
+                        <li><a href='<%= Page.ResolveUrl("~/Student/StudentDashboard") %>'>Dashboard</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/ApplyRoom") %>'>Apply Room</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/RoomDetails") %>'>Room Details</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/Payment") %>'>Fee Payment</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/RaiseComplaint") %>'>Complaints</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/VisitorEntry") %>'>Visitors</a></li>
+                        <li><a href='<%= Page.ResolveUrl("~/Student/MyProfile") %>'><i class="fas fa-user-circle"></i> Profile</a></li>
+                        <li>
+                            <asp:LinkButton ID="btnStudentLogout" runat="server" OnClick="btnStudentLogout_Click" CausesValidation="false" class="btn-custom btn-danger-custom" style="color: white; padding: 0.4rem 1rem; border-radius: 8px;">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </asp:LinkButton>
+                        </li>
+                    <% } %>
+                </ul>
+                
+                <!-- Dark / Light Theme Toggle -->
+                <button type="button" id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="container-full">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+        </main>
+
+        <!-- Footer -->
+        <footer class="custom-footer">
+            <p>&copy; <%= DateTime.Now.Year %> HostelManagement ERP. All rights reserved.</p>
+            <p style="font-size: 0.75rem; margin-top: 0.5rem; opacity: 0.7;">Developed using 3-Tier Architecture & ASP.NET Web Forms.</p>
+        </footer>
+
+        <!-- Toast Notifications Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Global Page Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+        </div>
+    </form>
+    
+    <!-- Script References -->
+    <script src='<%= Page.ResolveUrl("~/Scripts/site.js") %>'></script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="HostelManagementSystem.MasterPages.Admin" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Admin Control Panel</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="~/Content/fontawesome/css/all.min.css" />
+    
+    <!-- Custom Style System -->
+    <link href="~/CSS/style.css" rel="stylesheet" type="text/css" />
+    
+    <style>
+        /* Specific Styles for ASP.NET TreeView & Menu in Glassmorphic Theme */
+        .admin-treeview {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+        }
+        .admin-treeview a {
+            color: var(--text-primary);
+            text-decoration: none;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            margin: 2px 0;
+            width: 100%;
+            transition: all var(--transition-speed);
+        }
+        .admin-treeview a:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+        
+        .admin-top-menu {
+            font-family: var(--font-body);
+        }
+        .admin-top-menu a {
+            color: var(--text-primary) !important;
+            text-decoration: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            border-radius: 8px;
+            transition: background var(--transition-speed);
+        }
+        .admin-top-menu a:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color) !important;
+        }
+    </style>
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
+        
+        <!-- Top Nav Bar -->
+        <header class="custom-navbar">
+            <a href='<%= Page.ResolveUrl("~/Admin/AdminDashboard") %>' class="navbar-brand-custom">
+                <i class="fas fa-user-shield"></i> Warden<span>Portal</span>
+            </a>
+            
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <!-- ASP.NET Menu Control (Requirement #1) -->
+                <asp:Menu ID="AdminTopMenu" runat="server" Orientation="Horizontal" CssClass="admin-top-menu" StaticDisplayLevels="1">
+                    <Items>
+                        <asp:MenuItem Text="System View" Selectable="false">
+                            <asp:MenuItem Text="Public Site" NavigateUrl="~/Pages/Home" />
+                            <asp:MenuItem Text="Admin Home" NavigateUrl="~/Admin/AdminDashboard" />
+                        </asp:MenuItem>
+                    </Items>
+                </asp:Menu>
+
+                <!-- Dark / Light Switcher -->
+                <button type="button" id="theme-toggle" class="theme-toggle-btn" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                
+                <asp:LinkButton ID="btnAdminLogout" runat="server" OnClick="btnAdminLogout_Click" CausesValidation="false" class="btn-custom btn-danger-custom" style="color: white; padding: 0.4rem 1rem; border-radius: 8px;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </asp:LinkButton>
+            </div>
+        </header>
+
+        <!-- Sidebar Layout Container -->
+        <div class="portal-container">
+            <aside class="portal-sidebar">
+                <div>
+                    <h3 class="portal-sidebar-title">Navigation</h3>
+                    
+                    <!-- ASP.NET TreeView Control (Requirement #2) -->
+                    <asp:TreeView ID="AdminNavTreeView" runat="server" CssClass="admin-treeview" NodeIndent="15" ShowLines="false">
+                        <Nodes>
+                            <asp:TreeNode Text="Dashboard" NavigateUrl="~/Admin/AdminDashboard" />
+                            <asp:TreeNode Text="Manage Students" NavigateUrl="~/Admin/ManageStudents" />
+                            <asp:TreeNode Text="Manage Rooms" NavigateUrl="~/Admin/ManageRooms" />
+                            <asp:TreeNode Text="Room Allocations" NavigateUrl="~/Admin/ManageAllocations" />
+                            <asp:TreeNode Text="Verify Payments" NavigateUrl="~/Admin/ManagePayments" />
+                            <asp:TreeNode Text="Student Complaints" NavigateUrl="~/Admin/ManageComplaints" />
+                            <asp:TreeNode Text="Visitor Logs" NavigateUrl="~/Admin/ManageVisitors" />
+                            <asp:TreeNode Text="Reports & Export" NavigateUrl="~/Admin/Reports" />
+                        </Nodes>
+                    </asp:TreeView>
+                </div>
+            </aside>
+            
+            <!-- Main Content Area -->
+            <section class="portal-main">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </section>
+        </div>
+
+        <!-- Toast Notifications -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <!-- Global Loader Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+        </div>
+    </form>
+    
+    <!-- Script References -->
+    <script src='<%= Page.ResolveUrl("~/Scripts/site.js") %>'></script>
+</body>
+</html>
